@@ -16,6 +16,14 @@ As stated earlier, the data includes way too much categorical features to apply 
 
 Consequently, we decided to move forward without applying and encoding for the pre-process. The rest of the was way too perfect, with no missing values or outliers.
 
+## Variable Description
+![1](https://user-images.githubusercontent.com/118773869/232551694-b27f3b81-2ddc-4972-8981-4e3f36dbf083.png)
+
+## Preliminary Inferences
+
+![image](https://user-images.githubusercontent.com/118773869/232552049-fe3098c5-3f47-469d-9f48-d002e12e6dee.png)
+
+
 ## Example Usage of BuildRegressionModel.py 
 
 ```
