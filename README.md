@@ -134,7 +134,7 @@ Stacking is also an ensemble learning technique that uses predictions from multi
 
 # Conclusion 
 
-We've applied several Machine Learning Regression models, including XGBM, LGBM, Stacked and Bagging Ensemble algrothims, and the below table summarizes our findings. Depending on the goal, minimizing rmse or maximixing r-square, the below table should be able to help you out.  
+We've applied several Machine Learning Regression models, including XGBM, LGBM, Stacked and Bagging Ensemble algorithms, and the below table summarizes our findings. Depending on the goal, minimizing rmse or maximixing r-square, the below table should be able to help you out.  
 
 | Model | R-square score | RMSE score|
 |-------|----------------|-----------|
