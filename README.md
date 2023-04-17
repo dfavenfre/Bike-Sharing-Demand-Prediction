@@ -65,7 +65,11 @@ VISUALIZATION WITH OPTUNA
 Optuna is an automatic hyperparameter optimization software framework, particularly designed for machine learning. It features an imperative, define-by-run style user API. Both we use Optuna for finding best parameters and score and for visualising the importance and relations and which values of them useing more and getting better result.
 As result of LightGBM Regression analysis, We can see 
 
-<img width="833" alt="Screenshot 2023-04-17 at 19 47 40" src="https://user-images.githubusercontent.com/116746888/232555697-9b859e70-f35a-444c-8a2b-df49562e04a5.png">
+
+<img width="1105" alt="Screenshot 2023-04-17 at 20 00 37" src="https://user-images.githubusercontent.com/116746888/232557638-bb7107f5-637d-40e5-b477-7de98198e81f.png">
+
+
+
 
 <img width="1098" alt="Screenshot 2023-04-17 at 19 53 32" src="https://user-images.githubusercontent.com/116746888/232556076-f6d48005-522f-42fa-a13a-3c2068a5f51b.png">
 
