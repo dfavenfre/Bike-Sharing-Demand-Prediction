@@ -41,7 +41,7 @@ hyperparameters_lgb = {
     "min_gain_to_split":[0,30]
 }
 
-# instantiate modeller
+# instantiate models
 brm = BuildRegressionModel(X,y) # feature and target should be assigned earlier
 
 # shuffle and split data
