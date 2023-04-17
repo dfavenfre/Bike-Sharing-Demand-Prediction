@@ -59,3 +59,17 @@ y_pred_xgb = model_xgb.predict(X_test)
 brm.get_regression_result(y_test, y_pred_xgb)
 
 ```
+
+VISUALIZATION WITH OPTUNA 
+
+Optuna is an automatic hyperparameter optimization software framework, particularly designed for machine learning. It features an imperative, define-by-run style user API. Both we use Optuna for finding best parameters and score and for visualising the importance and relations and which values of them useing more and getting better result.
+As result of LightGBM Regression analysis, We can see 
+
+<img width="833" alt="Screenshot 2023-04-17 at 19 47 40" src="https://user-images.githubusercontent.com/116746888/232555697-9b859e70-f35a-444c-8a2b-df49562e04a5.png">
+<img width="1098" alt="Screenshot 2023-04-17 at 19 53 32" src="https://user-images.githubusercontent.com/116746888/232556076-f6d48005-522f-42fa-a13a-3c2068a5f51b.png">
+
+<img width="1110" alt="Screenshot 2023-04-17 at 19 53 57" src="https://user-images.githubusercontent.com/116746888/232556147-6a49c3c2-59f0-462d-abf1-5d505516d882.png">
+
+<img width="1102" alt="Screenshot 2023-04-17 at 19 54 24" src="https://user-images.githubusercontent.com/116746888/232556249-90c3bbf0-48b1-4995-b525-47429d1956dc.png">
+
+
