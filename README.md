@@ -59,23 +59,86 @@ y_pred_xgb = model_xgb.predict(X_test)
 brm.get_regression_result(y_test, y_pred_xgb)
 
 ```
+# Optuna Optimization Details
 
-HYPERPARAMETER TUNING AND VISUALIZATION WITH OPTUNA 
+```
+    def xgb_obj(trial, hyperparameters=hyperparameters_xgb):
+        """
+        Description:
+        -----------
+        Optimize Extreme Gradient Boosting with pre-defined hyperparameters. The tuning is optimized for minimizing the error terms, which is rooted means squared errors (RMSE).  
+        
+        Parameters:
+        -----------
+        hyperparameters(dict): Pre-defined dictionary consist of key and value pairs of hyperparameters
+        Returns:
+        
+        -----------
+        Verbose lines with RMSE scores 
+        """
+        
+        
+        param = {}
+
+        for key, value in hyperparameters.items():
+            if isinstance(value, Iterable):
+                if isinstance(value[0], float):
+                    param[key] = trial.suggest_float(key, value[0], value[1])
+                else:
+                    param[key] = trial.suggest_int(key, value[0], value[1])
+            else:
+                param[key] = value
+
+        # non-hyperparameter settings
+        param["n_jobs"] = -1 # deploy 100% of gpu's computational power 
+        param["random_state"] = 42
+
+        model = xgboost.XGBRegressor(**param)
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+
+        return (mean_squared_error(y_test, y_pred))**(1/2)
+```
+
+
+# Hyperparameter fine-tuning with Optuna  
 
 Optuna is an automatic hyperparameter optimization software framework, particularly designed for machine learning.  We used Optuna both for finding best parameters and score and for visualising the importance and relations and which values of them useing more and getting better and faster result.
 
-As result of LightGBM Regression analysis, You can see different types of visualization of hyperparameters:
+## Extreme Gradient Boosting Model Regression Hyperparameter Importances 
+
+![newplot (1)](https://user-images.githubusercontent.com/118773869/232568264-9875effb-4ab8-4ae1-ae99-accde0ddebfd.png)
+
+![newplot](https://user-images.githubusercontent.com/118773869/232568171-aa5d2b7c-a238-4042-b50f-05c9d31792f6.png)
 
 
-<img width="1105" alt="Screenshot 2023-04-17 at 20 00 37" src="https://user-images.githubusercontent.com/116746888/232557638-bb7107f5-637d-40e5-b477-7de98198e81f.png">
+## Light Gradient Boosting Model Regression Hyperparameter Importances 
 
+![newplot (2)](https://user-images.githubusercontent.com/118773869/232569065-bc85851e-5685-4603-b98c-a7dcbd458fc5.png)
 
+![newplot (3)](https://user-images.githubusercontent.com/118773869/232569086-89ea50e8-8134-43e2-9c25-a8be69a70298.png)
 
+# Controlling for futures' individual contribution using SHAP
+SHAP (SHapley Additive Explanations) is a game theoretic approach to explain the output of any machine learning model. It connects optimal credit allocation with local explanations using the classic Shapley values from game theory and their related extensions. It measures each inputs' individual contribution to the model. The more red, the more contribution, and vice versa. 
 
-<img width="1098" alt="Screenshot 2023-04-17 at 19 53 32" src="https://user-images.githubusercontent.com/116746888/232556076-f6d48005-522f-42fa-a13a-3c2068a5f51b.png">
+### XGB Model Output
+![image](https://user-images.githubusercontent.com/118773869/232570216-f3c04203-f163-4a8a-93cf-fd50348b2546.png)
+### LGB Model Output
+![image](https://user-images.githubusercontent.com/118773869/232571612-61598cc2-0bee-4efb-bb7a-4c04e16d17a3.png)
 
-<img width="1110" alt="Screenshot 2023-04-17 at 19 53 57" src="https://user-images.githubusercontent.com/116746888/232556147-6a49c3c2-59f0-462d-abf1-5d505516d882.png">
+# Ensemble Regression Model
 
-<img width="1102" alt="Screenshot 2023-04-17 at 19 54 24" src="https://user-images.githubusercontent.com/116746888/232556249-90c3bbf0-48b1-4995-b525-47429d1956dc.png">
+Ensemble models combine the decisions from multiple models to improve the overall performance. This can be achieved in various ways. A voting ensemble involves making a prediction that is the average of multiple other regression models.
 
+Stacking is also an ensemble learning technique that uses predictions from multiple models (for example decision tree, knn or svm) to build a new model. This model is used for making predictions on the test set.
 
+# Conclusion 
+
+We've applied several Machine Learning Regression models, including XGBM, LGBM, Stacked and Bagging Ensemble algrothims, and the below table summarizes our findings. Depending on the goal, minimizing rmse or maximixing r-square, the below table should be able to help you out.  
+
+| Model | R-square score | RMSE score|
+|-------|----------------|-----------|
+| Stacked Ensemble| 0.975| 35.341|
+| Bagging Ensemble| 0.960| 45.465|
+| Optimized XGB| 0.969| 32.553|  
+| Optimized LGB| 0.970| 39.209|
