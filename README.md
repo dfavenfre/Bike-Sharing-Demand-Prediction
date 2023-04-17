@@ -1,8 +1,20 @@
 # Bike Rent Demand Prediction Model
 
-Within the project, it is purposed to build a demand prediction model for bike sharing count for Capital Bikeshare program in Washington, D.C. . The data is available at Kaggle's database (https://www.kaggle.com/competitions/bike-sharing-demand/data). 
+Within the project, it is purposed to build a demand prediction model for bike sharing count for Capital Bikeshare program in Washington, D.C.. The data is available at Kaggle's database (https://www.kaggle.com/competitions/bike-sharing-demand/data). 
 
 We've written a class that enables multi-model building, as well as optimization with Optuna for RMSE (root mean squared error). As an example for the whole project, a master notebook is also available within the repository. 
+
+## Data Pre-processing
+
+First, We increased the number of features by dummifying categorical variables, though since the data we have is quite small in terms of size, modelling it this way  easily dropped the model' scores.
+
+As a consideration for the linear model, transforming categorical variables into numeric ones by using either get_dummies of Pandas or Onehot Encoding of Sklearn are more meaningful and thus they provide better score when compared to not transforming them into numeric. 
+
+However, in tree-based models like Decision-Tree, XGBoost, LGBM, RandomForest, etc., not applying these methodologies ensures the tree-based models to understand nonlinear relationships between features and gives better and significant results.
+
+As stated earlier, the data includes way too much categorical features to apply any encoding algorithm (or non-linear relationships might not be caught by tree algorithms)herefore, some of these features, which are under the treshold specified for feature engineering, may be assumed over or underestimated when it comes to feature importance
+
+Consequently, we decided to move forward without applying and encoding for the pre-process. The rest of the was way too perfect, with no missing values or outliers.
 
 ## Example Usage of BuildRegressionModel.py 
 
