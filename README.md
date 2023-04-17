@@ -60,10 +60,11 @@ brm.get_regression_result(y_test, y_pred_xgb)
 
 ```
 
-VISUALIZATION WITH OPTUNA 
+HYPERPARAMETER TUNING AND VISUALIZATION WITH OPTUNA 
 
-Optuna is an automatic hyperparameter optimization software framework, particularly designed for machine learning. It features an imperative, define-by-run style user API. Both we use Optuna for finding best parameters and score and for visualising the importance and relations and which values of them useing more and getting better result.
-As result of LightGBM Regression analysis, We can see 
+Optuna is an automatic hyperparameter optimization software framework, particularly designed for machine learning.  We used Optuna both for finding best parameters and score and for visualising the importance and relations and which values of them useing more and getting better and faster result.
+
+As result of LightGBM Regression analysis, You can see different types of visualization of hyperparameters:
 
 
 <img width="1105" alt="Screenshot 2023-04-17 at 20 00 37" src="https://user-images.githubusercontent.com/116746888/232557638-bb7107f5-637d-40e5-b477-7de98198e81f.png">
