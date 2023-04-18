@@ -1,28 +1,27 @@
 # Bike Rent Demand Prediction Model
 
-Within the project, it is purposed to build a demand prediction model for bike sharing count for Capital Bikeshare program in Washington, D.C.. The data is available at Kaggle's database (https://www.kaggle.com/competitions/bike-sharing-demand/data). 
+Within the project, it is purposed to build a demand forecast model for bike sharing count for Capital Bikeshare program in Washington, D.C.. The data is available at Kaggle (https://www.kaggle.com/competitions/bike-sharing-demand/data). 
 
-We've written a class that enables multi-model building, as well as optimization with Optuna for RMSE (root mean squared error). As an example for the whole project, a master notebook is also available within the repository. 
+We've written a class that enables multi-model building, as well as an optimization script with Optuna for RMSE (root mean squared error). As an example for the whole project, a master notebook is also available within the repository. 
 
 ## Data Pre-processing
 
-First, We increased the number of features by dummifying categorical variables, though since the data we have is quite small in terms of size, modelling it this way  easily dropped the model' scores.
+First, We increased the number of features by dummifying categorical variables, however, since the data we have is quite small in terms of size, modelling it this way  would've dropped the models' score significantly.
 
 As a consideration for the linear model, transforming categorical variables into numeric ones by using either get_dummies of Pandas or Onehot Encoding of Sklearn are more meaningful and thus they provide better score when compared to not transforming them into numeric. 
 
-However, in tree-based models like Decision-Tree, XGBoost, LGBM, RandomForest, etc., not applying these methodologies ensures the tree-based models to understand nonlinear relationships between features and gives better and significant results.
+However, in tree-based models like Decision-Tree, XGBoost, LGBM, RandomForest, etc., not applying these methodologies boosts the tree-based models to understand nonlinear relationships between features and the target, and thus, the models yield better and significant results.
 
-As stated earlier, the data includes way too much categorical features to apply any encoding algorithm (or non-linear relationships might not be caught by tree algorithms)herefore, some of these features, which are under the treshold specified for feature engineering, may be assumed over or underestimated when it comes to feature importance
+As stated earlier, the data include way too much categorical features to apply any encoding algorithm (or non-linear relationships might not be caught by tree algorithms) therefore, some of these features, which are under the certain thresholds specified for feature engineering, may be over/underestimated when it comes to feature importance.
 
-Consequently, we decided to move forward without applying and encoding for the pre-process. The rest of the was way too perfect, with no missing values or outliers.
+Consequently, we decided to move forward without encoding for categorical variables within the data pre-process. The remaining data was way too perfect, with no missing values or outliers.
 
 ## Variable Description
 ![1](https://user-images.githubusercontent.com/118773869/232551694-b27f3b81-2ddc-4972-8981-4e3f36dbf083.png)
 
-## Preliminary Inferences
+## Preliminary Inference (Correlation Heatmap)
 
 ![image](https://user-images.githubusercontent.com/118773869/232552049-fe3098c5-3f47-469d-9f48-d002e12e6dee.png)
-
 
 ## Example Usage of BuildRegressionModel.py 
 
@@ -63,20 +62,21 @@ brm.get_regression_result(y_test, y_pred_xgb)
 
 ```Python
 def xgb_obj(trial, hyperparameters=hyperparameters_xgb):
+
     """
     Description:
     -----------
-    Optimize Extreme Gradient Boosting with pre-defined hyperparameters. The tuning is optimized for minimizing the error terms, which is rooted means squared errors (RMSE).  
+        Optimize Extreme Gradient Boosting with pre-defined hyperparameters. The tuning is optimized for minimizing the error terms, which is rooted means squared errors (RMSE).  
 
     Parameters:
     -----------
-    hyperparameters(dict): Pre-defined dictionary consist of key and value pairs of hyperparameters
+        Hyperparameters(dict): Pre-defined dictionary consist of key and value pairs of hyperparameters,
+    
     Returns:
-
     -----------
-    Verbose lines with RMSE scores 
+        Process (Verbose) lines with RMSE scores and hyperparameters used in each trial. 
+    
     """
-
 
     param = {}
 
@@ -103,7 +103,7 @@ def xgb_obj(trial, hyperparameters=hyperparameters_xgb):
 
 # Hyperparameter fine-tuning with Optuna  
 
-Optuna is an automatic hyperparameter optimization software framework, particularly designed for machine learning.  We used Optuna both for finding best parameters and score and for visualising the importance and relations and which values of them useing more and getting better and faster result.
+Optuna is an automatic hyperparameter optimization software framework, particularly designed for machine learning.  We used Optuna both for finding best parameters and score and for visualizing the importance and relations to conclude which of the hyperparameters add value the most to the model. Slice plots provide a better perspective when it comes to fine-tuning the model. Slice plot shows, given the hyperparameter upper and lower bounds, which hyperparameter yields better results and the plot also shows a boundary for us to decide whether to increase or decrease upper boundary. Thus, it scopes us for more improvement. 
 
 ## Extreme Gradient Boosting Model Regression Hyperparameter Importances 
 
@@ -119,7 +119,8 @@ Optuna is an automatic hyperparameter optimization software framework, particula
 ![newplot (3)](https://user-images.githubusercontent.com/118773869/232569086-89ea50e8-8134-43e2-9c25-a8be69a70298.png)
 
 # Controlling for futures' individual contribution using SHAP
-SHAP (SHapley Additive Explanations) is a game theoretic approach to explain the output of any machine learning model. It connects optimal credit allocation with local explanations using the classic Shapley values from game theory and their related extensions. It measures each inputs' individual contribution to the model. The more red, the more contribution, and vice versa. 
+
+SHAP (Shapley Additive Explanations) is a game theoretic approach to explain the output of any machine learning model. It connects optimal credit allocation with local explanations using the classic Shapley values from game theory and their related extensions. It measures each inputs' individual contribution to the model. To exemplify, let's say we have X, Y, Z as features within the model. First the algorithm builds a model using X, Y, and Z and then it sequentially drops each feature and builds another model to obtain amongst which of these features add the most value to the model. Hence, the following SHAP visualizations follow the exact procedure. We visualized both LGBM and XGBM SHAP outputs to observe which feature adds more weight in terms of significance to the model. 
 
 ### XGB Model Output
 ![image](https://user-images.githubusercontent.com/118773869/232570216-f3c04203-f163-4a8a-93cf-fd50348b2546.png)
@@ -128,9 +129,7 @@ SHAP (SHapley Additive Explanations) is a game theoretic approach to explain the
 
 # Ensemble Regression Model
 
-Ensemble models combine the decisions from multiple models to improve the overall performance. This can be achieved in various ways. A voting ensemble involves making a prediction that is the average of multiple other regression models.
-
-Stacking is also an ensemble learning technique that uses predictions from multiple models (for example decision tree, knn or svm) to build a new model. This model is used for making predictions on the test set.
+Ensemble models combine the decisions from multiple models to improve the overall performance. This can be achieved in various ways. A voting ensemble involves making a prediction that is the average of multiple other regression models. Stacking is also an ensemble learning technique that uses predictions from multiple models (for example decision tree, knn or svm) to build a new model. 
 
 # Conclusion 
 
