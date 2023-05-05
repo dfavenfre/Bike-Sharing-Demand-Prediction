@@ -28,7 +28,7 @@ class BuildRegressionModel:
 
         return y_pred, model
     
-    def lgb_obj(trial, hyperparameters=hyperparameters_lgb):
+    def lgb_obj(trial, hyperparameters):
 
         param = {}
 
@@ -53,7 +53,7 @@ class BuildRegressionModel:
         return (mean_squared_error(y_test, y_pred))**(1/2)
     
     
-    def xgb_obj(trial, hyperparameters=hyperparameters_xgb):
+    def xgb_obj(trial, hyperparameters):
         param = {}
 
         for key, value in hyperparameters.items():
